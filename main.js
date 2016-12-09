@@ -8,9 +8,14 @@ var JA = (function(){
             dataType:"json",
             method:'post',
             success:function(data){
+                //var state = data.message;
                 if(data){
                     console.log('['+new Date().toLocaleTimeString()+'] '+data.code+':'+data.message);
-                    if( data.code == 2 || data.message.indexOf('已抢完') >= 0){
+                    if( 
+                        data.code == 2 || 
+                        data.message.indexOf('已抢完') >= 0 ||
+                        data.message.indexOf('没有分享') >= 0
+                    ) {
                         stop();
                         alert(data.message);
                         return;
@@ -33,8 +38,7 @@ var JA = (function(){
     }
 
     function start(t){
-        handler && clearTimeout(handler);
-        tick = t || 1;
+        tick = t || tick;
         flag = true;
         process();
     }
@@ -45,17 +49,18 @@ var JA = (function(){
     }
 
     
-    function task(s){
-        s = s ? (new Date(s).getTime()) : 1481169600000;
+    function task(){
         
+        var s = new Date( new Date().toLocaleDateString() ).setHours(12);
+        var threshold = 60 * 1000;
+
         start(30 * 1000);
 
         var h = setInterval(function(){
             var n = Date.now();
-            if(s - n < 60 * 1000){
+            if(s - n < threshold){
                 tick = 1;
                 clearInterval(h);
-                //start(t);
             }
         },1000);
     }
@@ -67,4 +72,4 @@ var JA = (function(){
     }
 }());
 
-JA.task('2016-12-09 12:00:00');
+JA.task();
