@@ -13,8 +13,8 @@ var JA = (function(){
                     console.log('['+new Date().toLocaleTimeString()+'] '+data.code+':'+data.message);
                     if( 
                         data.code == 2 || 
-                        data.message.indexOf('已抢完') >= 0 ||
-                        data.message.indexOf('没有分享') >= 0
+                        data.message.indexOf('已抢完') >= 0
+                        //data.message.indexOf('没有分享') >= 0
                     ) {
                         stop();
                         alert(data.message);
